@@ -20,82 +20,88 @@ let isRefreshing = false; // 是否正在更新 token
 let refreshPromise = null; // 更新 token 的 Promise
 
 const handleError = err => {
-	console.error(err);
-  };
+    console.error(err);
+};
 
 const requests = {
-	del: url =>
-	  superagent
-		.del(`${API_ROOT}${url}`)
-		.use(tokenPlugin)
-		.then(responseBody)
-		.catch(handleError),
-	get: url =>
-	  superagent
-		.get(`${API_ROOT}${url}`)
-		.use(tokenPlugin)
-		.then(responseBody)
-		.catch(handleError),
-	put: (url, body) =>
-	  superagent
-		.put(`${API_ROOT}${url}`, body)
-		.use(tokenPlugin)
-		.then(responseBody)
-		.catch(handleError),
-	post: (url, body) =>
-	  superagent
-		.post(`${API_ROOT}${url}`, body)
-		.use(tokenPlugin)
-		.then(responseBody)
-		.catch(handleError),
-  };
+    del: url =>
+        superagent
+            .del(`${API_ROOT}${url}`)
+            .use(tokenPlugin)
+            .then(responseBody)
+            .catch(handleError),
+    get: url =>
+        superagent
+            .get(`${API_ROOT}${url}`)
+            .use(tokenPlugin)
+            .then(responseBody)
+            .catch(handleError),
+    put: (url, body) =>
+        superagent
+            .put(`${API_ROOT}${url}`, body)
+            .use(tokenPlugin)
+            .then(responseBody)
+            .catch(handleError),
+    post: (url, body) =>
+        superagent
+            .post(`${API_ROOT}${url}`, body)
+            .use(tokenPlugin)
+            .then(responseBody)
+            .catch(handleError),
+};
 
 const Auth = {
-    login: ( password,phoneNumber) =>
+    login: (password, phoneNumber) =>
         requests
-			.post('/user/login', { password:password,phoneNumber:phoneNumber}),
+            .post('/user/login', { password: password, phoneNumber: phoneNumber }),
     register: (code, password, userName, phoneNumber) =>
         requests
-			.post('/user/register', { code:code,password:password,userName:userName,phoneNumber:phoneNumber }),
+            .post('/user/register', { code: code, password: password, userName: userName, phoneNumber: phoneNumber }),
     sendMessage: (phoneNumber) =>
         requests.get('/code/send,${phoneNumber}'),
-    changePassword: (code, newPassword)=>
-        requests.post('/user/changePassword',{code:code,newPassword:newPassword}),
+    changePassword: (code, newPassword) =>
+        requests.post('/user/changePassword', { code: code, newPassword: newPassword }),
 
 };
 
-const Profile ={
-    getUserInfo:()=>
+const Profile = {
+    getUserInfo: () =>
         requests.get('/user/userinfo/'),
-    getBuy :() =>
+    getBuy: () =>
         requests.get('/goodwanted/get'),
-    getSell :() =>
+    getSell: () =>
         requests.get('/good/list'),
-    getCart:() =>
+    getCart: () =>
         requests.get('/cart/detail'),
 
-    updateName:(realName)=>
-        requests.post('/user/updaterealname',{realName: realName}),
-    updateClazz:(clazz)=>
-        requests.post('/user/updateclazz',{clazz:clazz}),
-    updateSno:(sno)=>
-        requests.post('/user/updatesno',{sno:sno}),
-    updateDormitory:(dormitory)=>
-        requests.post('/user/updatedormitory',{dormitory:dormitory}),
-    updateGender:(gender)=>
-        requests.post('/user/updategender',{gender:gender}),
-    updateAvatar:(avatar)=>
-        requests.post('/user/updateavatar',{avatar:avatar})
+    updateName: (realName) =>
+        requests.post('/user/updaterealname', { realName: realName }),
+    updateClazz: (clazz) =>
+        requests.post('/user/updateclazz', { clazz: clazz }),
+    updateSno: (sno) =>
+        requests.post('/user/updatesno', { sno: sno }),
+    updateDormitory: (dormitory) =>
+        requests.post('/user/updatedormitory', { dormitory: dormitory }),
+    updateGender: (gender) =>
+        requests.post('/user/updategender', { gender: gender }),
+    updateAvatar: (avatar) =>
+        requests.post('/user/updateavatar', { avatar: avatar })
 }
 
-const Good={
+const Good = {
     getGoodDetail: id =>
         requests.get(`/good/detail/${id}`)
+}
+
+const GoodWanted = {
+    addGoodWanted: (name, price, sort, count, remark, transaction, image) =>
+        requests.post('/goodwanted/add', { name: name, price: price, sort: sort, count: count, remark: remark, transaction: transaction, image: image })
 }
 
 
 export default {
     Auth,
     Profile,
-    Good
+    Good,
+    GoodWanted
 };
