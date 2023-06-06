@@ -9,12 +9,14 @@ import Register from "./components/Register/Register";
 import agent from "./agent";
 import ChangePassword from "./components/Register/ChangePassword";
 import ReleaseWanted from "./components/Release/ReleaseWanted";
+import ChangeWanted from "./components/Release/ChangeWanted";
 
 //withAuth的组件实例化
 const AuthProfile = withAuth(Profile)
 const AuthPersonItem = withAuth(PersonItem)
 const AuthChangePW = withAuth(ChangePassword)
 const AuthReleaseWanted = withAuth(ReleaseWanted)
+const AuthChangeWanted = withAuth(ChangeWanted)
 
 //检查是否登录
 function checkAuth() {
@@ -50,6 +52,7 @@ function App() {
 				<Route path="/PersonItem" element={<AuthPersonItem />} />
 				<Route path="/ChangePassword" element={<AuthChangePW />} />
 				<Route path="/ReleaseWanted" element={<AuthReleaseWanted />} />
+				<Route path="/ChangeWanted" element={<AuthChangeWanted />} />
 			</Routes>
 		</Router>
 	);

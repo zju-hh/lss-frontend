@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import agent from '../../agent.js'
 import logo from '../../logo.svg'
 import Header from "../Header/Header";
@@ -19,10 +19,26 @@ import {
     Tabs,
     Toolbar,
     Typography,
+    CardActions
 
 } from '@material-ui/core';
 
-const ItemInfo = ({item}) => {
+const ItemInfo = ({ item }) => {
+    const navigate = useNavigate();
+    const handleChange = () => {
+        navigate('/ChangeWanted', {
+            state: {
+                name: item.name,
+                price: item.price,
+                remark: item.remark,
+                sort: item.sort,
+                count: item.count,
+                transaction: item.transaction,
+                image: item.image
+            }
+        });
+    }
+
     return (
         <Card>
             <Box display="flex">
@@ -30,7 +46,7 @@ const ItemInfo = ({item}) => {
                     component="img"
                     height="300"
                     image={item.image}
-                    style={{objectFit: "contain"}}
+                    style={{ objectFit: "contain" }}
                     onError={(e) => {
                         e.target.src = "https://api.dujin.org/bing/1366.php";
                     }}
@@ -45,20 +61,23 @@ const ItemInfo = ({item}) => {
 
                 </Box>
             </Box>
+            <CardActions>
+                <Button size="small" color="primary" variant="contained" onClick={handleChange} >修改</Button>
+            </CardActions>
         </Card>
     )
 }
 
-const BuyingItems = ({items}) => {
+const BuyingItems = ({ items }) => {
     return (
         <Box mt={3}>
             <Typography variant="h4">个人求购的商品</Typography>
-            <hr/>
+            <hr />
             {items.length > 0 ? (
                 <Grid container spacing={3}>
                     {items.map(item => (
                         <Grid item xs={12} key={item.id}>
-                            <ItemInfo item={item}/>
+                            <ItemInfo item={item} />
                         </Grid>
                     ))}
                 </Grid>
@@ -68,16 +87,16 @@ const BuyingItems = ({items}) => {
     );
 };
 
-const SellingItems = ({items}) => {
+const SellingItems = ({ items }) => {
     return (
         <Box mt={3}>
             <Typography variant="h4">个人出售的商品</Typography>
-            <hr/>
+            <hr />
             {items.length > 0 ? (
                 <Grid container spacing={3}>
                     {items.map(item => (
                         <Grid item xs={12} key={item.id}>
-                            <ItemInfo item={item}/>
+                            <ItemInfo item={item} />
                         </Grid>
                     ))}
                 </Grid>
@@ -87,18 +106,18 @@ const SellingItems = ({items}) => {
     );
 };
 
-const CartItems = ({items, dic}) => {
+const CartItems = ({ items, dic }) => {
     return (
         <Box mt={3}>
             <Typography variant="h4">购物车</Typography>
-            <hr/>
+            <hr />
             {items.length > 0 ? (
                 <Grid container spacing={7}>
                     {items.map(item => (
                         <Grid item xs={12} key={item.id} className={"border-dark"}>
                             <Card>
                                 {dic[item.qid] != null ?
-                                    <ItemInfo item={dic[item.qid]}/>
+                                    <ItemInfo item={dic[item.qid]} />
                                     :
                                     "商品不存在 !"
                                 }
@@ -161,7 +180,7 @@ const PersonItem = () => {
 
     return (
         <div>
-            <Container style={{marginTop: "20px"}}>
+            <Container style={{ marginTop: "20px" }}>
                 <Box marginTop={34}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={2}>
@@ -173,8 +192,8 @@ const PersonItem = () => {
                                     onClick={() => handleChange(null, 0)}
                                 >
                                     <ListItemIcon></ListItemIcon>
-                                    <ListItemText primary="个人求购的商品"/>
-                                    <Badge color="primary" badgeContent={buyingItems.length}/>
+                                    <ListItemText primary="个人求购的商品" />
+                                    <Badge color="primary" badgeContent={buyingItems.length} />
                                 </ListItem>
                                 <ListItem
                                     button
@@ -182,8 +201,8 @@ const PersonItem = () => {
                                     onClick={() => handleChange(null, 1)}
                                 >
                                     <ListItemIcon></ListItemIcon>
-                                    <ListItemText primary="个人出售的商品"/>
-                                    <Badge color="primary" badgeContent={sellingItems.length}/>
+                                    <ListItemText primary="个人出售的商品" />
+                                    <Badge color="primary" badgeContent={sellingItems.length} />
                                 </ListItem>
                                 <ListItem
                                     button
@@ -191,20 +210,20 @@ const PersonItem = () => {
                                     onClick={() => handleChange(null, 2)}
                                 >
                                     <ListItemIcon></ListItemIcon>
-                                    <ListItemText primary="购物车"/>
-                                    <Badge color="primary" badgeContent={cartItems.length}/>
+                                    <ListItemText primary="购物车" />
+                                    <Badge color="primary" badgeContent={cartItems.length} />
                                 </ListItem>
                             </List>
                         </Grid>
                         <Grid item xs={12} md={7}>
                             <TabPanel value={value} index={0}>
-                                <BuyingItems items={buyingItems}/>
+                                <BuyingItems items={buyingItems} />
                             </TabPanel>
                             <TabPanel value={value} index={1}>
-                                <SellingItems items={sellingItems}/>
+                                <SellingItems items={sellingItems} />
                             </TabPanel>
                             <TabPanel value={value} index={2}>
-                                <CartItems items={cartItems} dic={goodsDict}/>
+                                <CartItems items={cartItems} dic={goodsDict} />
                             </TabPanel>
                         </Grid>
                     </Grid>
@@ -213,7 +232,7 @@ const PersonItem = () => {
         </div>
     );
 };
-const TabPanel = ({children, value, index}) => {
+const TabPanel = ({ children, value, index }) => {
     return (
         <div hidden={value !== index}>
             {value === index && (
