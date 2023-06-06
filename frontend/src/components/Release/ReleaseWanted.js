@@ -10,17 +10,15 @@ const ReleaseWanted = () => {
     const [price, setPrice] = useState(0);
     const [boolPrice, setBoolPrice] = useState(false);
     const [sort, setSort] = useState(1);
-    const [boolSort, setBoolSort] = useState(false);
     const [count, setCount] = useState(0);
     const [boolCount, setBoolCount] = useState(false);
     const [remark, setRemark] = useState('');
     const [transaction, setTransaction] = useState(1);
-    const [boolTransaction, setBoolTransaction] = useState(false);
     const [image, setImage] = useState('');
     const [boolImage, setBoolImage] = useState(false);
 
     async function handleSubmit() {
-        if (boolName && boolPrice && boolSort && boolCount && boolTransaction && boolImage) {
+        if (boolName && boolPrice && boolCount && boolImage) {
             agent.GoodWanted.addGoodWanted(name, price, sort, count, remark, transaction, image);
         }
     }
@@ -69,7 +67,7 @@ const ReleaseWanted = () => {
                                 onChange={(event) => {
                                     var v = event.target.value;
                                     setPrice(v);
-                                    if (v === 0) {
+                                    if (v == 0) {
                                         setBoolPrice(false);
                                     } else {
                                         setBoolPrice(true);
@@ -82,11 +80,21 @@ const ReleaseWanted = () => {
                             <TextField
                                 required
                                 fullWidth
+                                error={!boolCount}
+                                helperText={boolCount ? "" : '商品数量不能为0'}
                                 label="数量"
                                 placeholder="请输入商品数量"
                                 value={count}
                                 variant="filled"
-                                onChange={(event) => { setCount(event.target.value) }}
+                                onChange={(event) => {
+                                    var v = event.target.value;
+                                    setCount(v);
+                                    if (v == 0) {
+                                        setBoolCount(false);
+                                    } else {
+                                        setBoolCount(true);
+                                    }
+                                }}
                             />
                         </Grid>
                         <Grid item>
@@ -141,11 +149,21 @@ const ReleaseWanted = () => {
                             <TextField
                                 required
                                 fullWidth
+                                error={!boolImage}
+                                helperText={boolImage ? "" : '商品图片不能为空'}
                                 label="图片"
                                 placeholder="请输入商品图片链接"
                                 value={image}
                                 variant="filled"
-                                onChange={(event) => { setImage(event.target.value) }}
+                                onChange={(event) => {
+                                    var v = event.target.value;
+                                    setImage(v);
+                                    if (v == '') {
+                                        setBoolImage(false);
+                                    } else {
+                                        setBoolImage(true);
+                                    }
+                                }}
                             />
                         </Grid>
                     </Grid>
