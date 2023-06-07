@@ -12,7 +12,7 @@ const ReleaseWanted = () => {
     const [boolName, setBoolName] = useState(false);
     const [price, setPrice] = useState(0);
     const [boolPrice, setBoolPrice] = useState(false);
-    const [sort, setSort] = useState(1);
+    const [sort, setSort] = useState(0);
     const [count, setCount] = useState(0);
     const [boolCount, setBoolCount] = useState(false);
     const [remark, setRemark] = useState('');
@@ -128,13 +128,20 @@ const ReleaseWanted = () => {
                                     variant="filled"
                                     onChange={(event) => { setSort(event.target.value) }}
                                 >
-                                    <MenuItem value={1}>电子产品</MenuItem>
-                                    <MenuItem value={2}>书籍</MenuItem>
-                                    <MenuItem value={3}>服饰</MenuItem>
-                                    <MenuItem value={4}>票类</MenuItem>
-                                    <MenuItem value={5}>食品</MenuItem>
-                                    <MenuItem value={6}>日用品</MenuItem>
-                                    <MenuItem value={7}>其他</MenuItem>
+                                    <MenuItem value={0}>笔记本</MenuItem>
+                                    <MenuItem value={1}>二手家具</MenuItem>
+                                    <MenuItem value={2}>二手手机</MenuItem>
+                                    <MenuItem value={3}>家居日用</MenuItem>
+                                    <MenuItem value={4}>家用电器</MenuItem>
+                                    <MenuItem value={5}>乐器/运动</MenuItem>
+                                    <MenuItem value={6}>门票卡券</MenuItem>
+                                    <MenuItem value={7}>母婴用品</MenuItem>
+                                    <MenuItem value={8}>平板电脑</MenuItem>
+                                    <MenuItem value={9}>手机配件</MenuItem>
+                                    <MenuItem value={10}>数码产品</MenuItem>
+                                    <MenuItem value={11}>台式电脑</MenuItem>
+                                    <MenuItem value={12}>箱包服饰</MenuItem>
+                                    <MenuItem value={13}>照相机</MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>
