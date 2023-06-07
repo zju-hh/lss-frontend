@@ -34,7 +34,8 @@ const ItemInfo = ({ item }) => {
                 sort: item.sort,
                 count: item.count,
                 transaction: item.transaction,
-                image: item.image
+                image: item.image,
+                id: item.id
             }
         });
     }

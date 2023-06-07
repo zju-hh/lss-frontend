@@ -95,7 +95,16 @@ const Good = {
 
 const GoodWanted = {
     addGoodWanted: (name, price, sort, count, remark, transaction, image) =>
-        requests.post('/goodwanted/add', { name: name, price: price, sort: sort, count: count, remark: remark, transaction: transaction, image: image })
+        requests.post('/goodwanted/add', { name: name, price: price, sort: sort, count: count, remark: remark, transaction: transaction, image: image }),
+    changeGoodWanted: (name, price, sort, count, remark, transaction, image, id) => {
+        requests.post('/goodwanted/updateName', { id: id, newName: name });
+        requests.post('/goodwanted/updatePrice', { id: id, newPrice: price });
+        requests.post('/goodwanted/updateSort', { id: id, newSort: sort });
+        requests.post('/goodwanted/updateCount', { id: id, newCount: count });
+        requests.post('/goodwanted/updateRemark', { id: id, newRemark: remark });
+        requests.post('/goodwanted/updateTransaction', { id: id, newTransaction: transaction });
+        requests.post('/goodwanted/updateImage', { id: id, newImage: image });
+    }
 }
 
 

@@ -22,7 +22,7 @@ const ChangeWanted = () => {
 
     async function handleSubmit() {
         if (boolName && boolPrice && boolCount && boolImage) {
-            agent.GoodWanted.addGoodWanted(name, price, sort, count, remark, transaction, image);
+            agent.GoodWanted.changeGoodWanted(name, price, sort, count, remark, transaction, image, location.state.id);
         }
     }
 
