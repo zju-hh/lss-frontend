@@ -23,10 +23,10 @@ import {
 
 } from '@material-ui/core';
 
-const ItemInfo = ({ item }) => {
+const ItemInfo = ({ item, route }) => {
     const navigate = useNavigate();
     const handleChange = () => {
-        navigate('/ChangeWanted', {
+        navigate(route, {
             state: {
                 name: item.name,
                 price: item.price,
@@ -78,7 +78,7 @@ const BuyingItems = ({ items }) => {
                 <Grid container spacing={3}>
                     {items.map(item => (
                         <Grid item xs={12} key={item.id}>
-                            <ItemInfo item={item} />
+                            <ItemInfo item={item} route='/ChangeWanted' />
                         </Grid>
                     ))}
                 </Grid>

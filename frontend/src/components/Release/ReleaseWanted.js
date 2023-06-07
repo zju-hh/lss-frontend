@@ -26,6 +26,7 @@ const ReleaseWanted = () => {
                 Promise.all([
                     agent.GoodWanted.addGoodWanted(name, price, sort, count, remark, transaction, image)
                 ]).then(results => {
+                    console.log(results);
                     const allSucceeded = results.every(result => result.result === 1);
                     if (allSucceeded) {
                         alert("求购信息发布成功！");
