@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import agent from '../../agent.js';
 import { Container } from "react-bootstrap";
 import { Card, CardActions, CardContent, TextField, Typography, Button, InputLabel, MenuItem, Select, FormControl, Grid } from "@material-ui/core";
+import { all } from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 const ReleaseWanted = () => {
+    const navigate = useNavigate();
     const [name, setName] = useState('');
     const [boolName, setBoolName] = useState(false);
     const [price, setPrice] = useState(0);
@@ -18,13 +21,30 @@ const ReleaseWanted = () => {
     const [boolImage, setBoolImage] = useState(false);
 
     async function handleSubmit() {
-        if (boolName && boolPrice && boolCount && boolImage) {
-            agent.GoodWanted.addGoodWanted(name, price, sort, count, remark, transaction, image);
+        if (navigator.onLine) {
+            if (boolName && boolPrice && boolCount && boolImage) {
+                Promise.all([
+                    agent.GoodWanted.addGoodWanted(name, price, sort, count, remark, transaction, image)
+                ]).then(results => {
+                    const allSucceeded = results.every(result => result.result === 1);
+                    if (allSucceeded) {
+                        alert("求购信息发布成功！");
+                        navigate('PersonItem');
+                    } else {
+                        alert("求购信息发布失败！");
+                    }
+                }).catch(error => {
+                    alert("求购信息发布失败！");
+                })
+            }
+        } else {
+            alert("网络连接异常，请检查网络设置！");
         }
+
     }
 
     return (
-        <Container style={{ marginTop: "20px", marginLeft: "15vw", marginRight: "15vw" }} maxWidth="sm">
+        <Container style={{ marginTop: "20px", marginLeft: "15vw", marginRight: "15vw" }}>
             <Card style={{ display: 'flex', justifyContent: 'center' }}>
                 <CardContent style={{ width: '30vw' }}>
                     <Grid container wrap="nowrap" spacing={3} direction="column">

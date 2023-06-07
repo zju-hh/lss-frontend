@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import agent from '../../agent.js';
 import { Container } from "react-bootstrap";
 import { Card, CardActions, CardContent, TextField, Typography, Button, InputLabel, MenuItem, Select, FormControl, Grid } from "@material-ui/core";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 const ChangeWanted = () => {
     const location = useLocation();
+    const id = location.state.id;
+    const navigate = useNavigate();
 
     const [name, setName] = useState(location.state.name);
     const [boolName, setBoolName] = useState(true);
@@ -22,7 +24,29 @@ const ChangeWanted = () => {
 
     async function handleSubmit() {
         if (boolName && boolPrice && boolCount && boolImage) {
-            agent.GoodWanted.changeGoodWanted(name, price, sort, count, remark, transaction, image, location.state.id);
+            if (navigator.onLine) {
+                Promise.all([
+                    agent.GoodWanted.updateName(id, name),
+                    agent.GoodWanted.updatePrice(id, price),
+                    agent.GoodWanted.updateCount(id, count),
+                    agent.GoodWanted.updateSort(id, sort),
+                    agent.GoodWanted.updateRemark(id, remark),
+                    agent.GoodWanted.updateTransaction(id, transaction),
+                    agent.GoodWanted.updateImage(id, image)
+                ]).then(results => {
+                    const allSucceeded = results.every(result => result.result === 1);
+                    if (allSucceeded) {
+                        alert("求购信息更新成功！");
+                        navigate('/PersonItem');
+                    } else {
+                        alert("求购信息更新失败！");
+                    }
+                }).catch(error => {
+                    alert("求购信息更新失败！");
+                });
+            } else {
+                alert("网络连接异常，请检查网络设置！");
+            }
         }
     }
 
