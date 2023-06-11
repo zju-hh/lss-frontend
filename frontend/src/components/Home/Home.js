@@ -1,11 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
-import agent from '../../agent.js'
-
+import React from 'react';
+import BannerCarousel from './BannerCarousel.js';
+import HeaderNavigation from './HeaderMenu.js';
+import HomeProductSection from './HomeProductSection.js';
 
 const Home = () => {
     return (
-        <>test home</>
+        <section>
+            <HeaderNavigation/>
+            <BannerCarousel />
+            <HomeProductSection/>
+        </section>
     )
 }
 export default Home

@@ -23,7 +23,7 @@ import {
 
 } from '@material-ui/core';
 
-const ItemInfo = ({ item, route }) => {
+const ItemInfo = ({item,route}) => {
     const navigate = useNavigate();
     const handleChange = () => {
         navigate(route, {
@@ -39,7 +39,6 @@ const ItemInfo = ({ item, route }) => {
             }
         });
     }
-
     return (
         <Card>
             <Box display="flex">
@@ -47,7 +46,7 @@ const ItemInfo = ({ item, route }) => {
                     component="img"
                     height="300"
                     image={item.image}
-                    style={{ objectFit: "contain" }}
+                    style={{objectFit: "contain"}}
                     onError={(e) => {
                         e.target.src = "https://api.dujin.org/bing/1366.php";
                     }}
@@ -63,7 +62,7 @@ const ItemInfo = ({ item, route }) => {
                 </Box>
             </Box>
             <CardActions>
-                <Button size="small" color="primary" variant="contained" onClick={handleChange} >修改</Button>
+                 <Button size="small" color="primary" variant="contained" onClick={handleChange} >修改</Button>
             </CardActions>
         </Card>
     )
@@ -72,17 +71,17 @@ const ItemInfo = ({ item, route }) => {
 const BuyingItems = ({ items }) => {
     return (
         <Box mt={3}>
-            <Typography variant="h4">个人求购的商品</Typography>
+            <Typography variant="h4" style={{textAlign:'center', color:'Highlight'}}>求购</Typography>
             <hr />
             {items.length > 0 ? (
                 <Grid container spacing={3}>
                     {items.map(item => (
-                        <Grid item xs={12} key={item.id}>
+                        <Grid item xs={11} key={item.id}>
                             <ItemInfo item={item} route='/ChangeWanted' />
                         </Grid>
                     ))}
                 </Grid>
-            ) : ("空空如也。")
+            ) : <Typography style={{textAlign:'center', fontSize:20, color:'Highlight'}}>空空如也</Typography>
             }
         </Box>
     );
@@ -91,17 +90,18 @@ const BuyingItems = ({ items }) => {
 const SellingItems = ({ items }) => {
     return (
         <Box mt={3}>
-            <Typography variant="h4">个人出售的商品</Typography>
+            <Typography variant="h4" style={{textAlign:'center', color:'Highlight'}}>出售</Typography>
+
             <hr />
             {items.length > 0 ? (
                 <Grid container spacing={3}>
                     {items.map(item => (
                         <Grid item xs={12} key={item.id}>
-                            <ItemInfo item={item} />
+                            <ItemInfo item={item} route='/ChangeSale '/>
                         </Grid>
                     ))}
                 </Grid>
-            ) : ("空空如也。")
+            ) :<Typography style={{textAlign:'center',fontSize:20, color:'Highlight'}}>空空如也</Typography>
             }
         </Box>
     );
@@ -110,19 +110,19 @@ const SellingItems = ({ items }) => {
 const CartItems = ({ items, dic }) => {
     return (
         <Box mt={3}>
-            <Typography variant="h4">购物车</Typography>
+            <Typography variant="h4" style={{textAlign:'center', color:'Highlight'}}>购物车</Typography>
             <hr />
             {items.length > 0 ? (
-                <Grid container spacing={7}>
+                <Grid container spacing={2}>
                     {items.map(item => (
-                        <Grid item xs={12} key={item.id} className={"border-dark"}>
-                            <Card>
+                        <Grid item xs={12} key={item.id} >
+                            <Card style={{ padding: 14,  borderRadius: 11,border: 'none',background:'#f0f0f0' }}>
                                 {dic[item.qid] != null ?
                                     <ItemInfo item={dic[item.qid]} />
                                     :
-                                    "商品不存在 !"
+                                    <Typography style={{textAlign:'center',alignContent:'center',fontSize:20, color:'Highlight',minHeight:100,verticalAlign:'middle'}}>商品不存在！</Typography>
                                 }
-                                <Box display="flex">
+                                <Box  >
                                     <Typography variant="subtitle1">数量：{item.quantity}</Typography>
                                     <Typography variant="subtitle1">收货地址：{item.address}</Typography>
                                 </Box>
@@ -130,7 +130,7 @@ const CartItems = ({ items, dic }) => {
                         </Grid>
                     ))}
                 </Grid>
-            ) : ("空空如也。")
+            ) : <Typography style={{textAlign:'center',fontSize:20, color:'Highlight'}}>空空如也</Typography>
             }
         </Box>
     );
@@ -140,23 +140,42 @@ const CartItems = ({ items, dic }) => {
 const PersonItem = () => {
     const [buyingItems, setBuyingItems] = useState([]);
     const [sellingItems, setSellingItems] = useState([]);
+    const [sellPageOff, setSellPageOff] = useState(0);
+    const maxDisplayCnt = 10;
     const [cartItems, setCartItems] = useState([]);
     const [goodsDict, setGoodsDict] = useState({});
+    const [NavPos, setNavPos] = useState(0);
     const [value, setValue] = useState(0);
-
     const handleChange = (event, newValue) => {
-        setValue(newValue);
+        setNavPos(newValue);
     };
+
+    const SellPageUp = () => {
+        if (sellingItems.length == maxDisplayCnt) {
+            setSellPageOff(sellPageOff + maxDisplayCnt);
+        }
+
+    }
+
+    const SellPageDown = () => {
+
+        setSellPageOff(Math.max(0, sellPageOff - maxDisplayCnt));
+
+    }
 
     const fetchData = async () => {
         const [buyingItems, sellingItems, cartItems] = await Promise.all([
             agent.Profile.getBuy(),
-            agent.Profile.getSell(),
+            agent.Profile.getPartSell(maxDisplayCnt, sellPageOff),
             agent.Profile.getCart()
         ]);
+
+
+        console.log(sellingItems, cartItems, buyingItems)
         setBuyingItems(buyingItems);
         setSellingItems(sellingItems);
         setCartItems(cartItems);
+
 
         const goodsDict = {};
         for (const item of cartItems) {
@@ -168,10 +187,11 @@ const PersonItem = () => {
         }
         setGoodsDict(goodsDict);
 
-        console.log(buyingItems)
-        console.log(sellingItems)
-        console.log(cartItems)
-        console.log(goodsDict)
+        console.log("buyingitems", buyingItems)
+        console.log("sellingitems", sellingItems)
+        console.log("cart", cartItems)
+        console.log("goods", goodsDict)
+
     };
 
     useEffect(() => {
@@ -182,49 +202,54 @@ const PersonItem = () => {
     return (
         <div>
             <Container style={{ marginTop: "20px" }}>
-                <Box marginTop={34}>
+                <Box >
                     <Grid container spacing={3}>
-                        <Grid item xs={12} md={2}>
-
-                            <List component="nav">
+                        <Grid item  >
+                            <List component="nav" >
                                 <ListItem
                                     button
-                                    selected={value === 0}
+                                    style={{ padding: 14, margin: 11, borderRadius: 11, width: 200 }}
+                                    selected={NavPos === 0}
                                     onClick={() => handleChange(null, 0)}
                                 >
-                                    <ListItemIcon></ListItemIcon>
                                     <ListItemText primary="个人求购的商品" />
-                                    <Badge color="primary" badgeContent={buyingItems.length} />
+                                    <Badge color="primary" badgeContent={buyingItems.length}  style={{ margin: 11}}/>
                                 </ListItem>
                                 <ListItem
                                     button
-                                    selected={value === 1}
+                                    style={{ padding: 14, margin: 11, borderRadius: 11, width: 200 }}
+                                    selected={NavPos === 1}
                                     onClick={() => handleChange(null, 1)}
                                 >
-                                    <ListItemIcon></ListItemIcon>
                                     <ListItemText primary="个人出售的商品" />
-                                    <Badge color="primary" badgeContent={sellingItems.length} />
+                                    <Badge color="primary" badgeContent={sellingItems.length} style={{ margin: 11}} />
                                 </ListItem>
                                 <ListItem
                                     button
-                                    selected={value === 2}
+                                    style={{ padding: 14, margin: 11,  borderRadius: 11, width: 200 }}
+                                    selected={NavPos === 2}
                                     onClick={() => handleChange(null, 2)}
                                 >
-                                    <ListItemIcon></ListItemIcon>
-                                    <ListItemText primary="购物车" />
-                                    <Badge color="primary" badgeContent={cartItems.length} />
+                                    <ListItemText primary="购物车" style={{ textAlign: 'left' }} />
+                                    <Badge color="primary" badgeContent={cartItems.length} style={{ margin: 11}}/>
                                 </ListItem>
                             </List>
                         </Grid>
-                        <Grid item xs={12} md={7}>
-                            <TabPanel value={value} index={0}>
+
+                        <Grid item xs={7} md={6} >
+
+                            <TabPanel value={NavPos} index={0}>
                                 <BuyingItems items={buyingItems} />
                             </TabPanel>
-                            <TabPanel value={value} index={1}>
+                            <TabPanel value={NavPos} index={1}>
                                 <SellingItems items={sellingItems} />
                             </TabPanel>
-                            <TabPanel value={value} index={2}>
+                            <TabPanel value={NavPos} index={2}>
                                 <CartItems items={cartItems} dic={goodsDict} />
+                            </TabPanel>
+                            < TabPanel value={NavPos} index={1}>
+                                <Button variant="contained" color="primary" onClick={SellPageDown} disabled={sellPageOff === 0}>后退</Button>
+                                <Button variant="contained" color="primary" onClick={SellPageUp} disabled={sellingItems.length != maxDisplayCnt} >前进</Button>
                             </TabPanel>
                         </Grid>
                     </Grid>
@@ -237,7 +262,7 @@ const TabPanel = ({ children, value, index }) => {
     return (
         <div hidden={value !== index}>
             {value === index && (
-                <Box>
+                <Box    >
                     {children}
                 </Box>
             )}

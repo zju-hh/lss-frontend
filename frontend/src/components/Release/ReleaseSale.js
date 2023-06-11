@@ -2,52 +2,50 @@ import React, { useState } from "react";
 import agent from '../../agent.js';
 import { Container } from "react-bootstrap";
 import { Card, CardActions, CardContent, TextField, Typography, Button, InputLabel, MenuItem, Select, FormControl, Grid } from "@material-ui/core";
-import { useLocation, useNavigate } from "react-router-dom";
+import { all } from "axios";
+import { useNavigate } from "react-router-dom";
 
 
-const ChangeWanted = () => {
-    const location = useLocation();
-    const id = location.state.id;
+const ReleaseSale = () => {
     const navigate = useNavigate();
-
-    const [name, setName] = useState(location.state.name);
-    const [boolName, setBoolName] = useState(true);
-    const [price, setPrice] = useState(location.state.price);
-    const [boolPrice, setBoolPrice] = useState(true);
-    const [sort, setSort] = useState(location.state.sort);
-    const [count, setCount] = useState(location.state.count);
-    const [boolCount, setBoolCount] = useState(true);
-    const [remark, setRemark] = useState(location.state.remark);
-    const [transaction, setTransaction] = useState(location.state.transaction);
-    const [image, setImage] = useState(location.state.image);
-    const [boolImage, setBoolImage] = useState(true);
+    const [name, setName] = useState('');
+    const [boolName, setBoolName] = useState(false);
+    const [price, setPrice] = useState(0);
+    const [level, setLevel] = useState(0);
+    const [boolLevel, setBoolLevel] = useState(false);
+    const [boolPrice, setBoolPrice] = useState(false);
+    const [sort, setSort] = useState(0);
+    const [count, setCount] = useState(0);
+    const [boolCount, setBoolCount] = useState(false);
+    const [remark, setRemark] = useState('');
+    const [transaction, setTransaction] = useState(1);
+    const [image, setImage] = useState('');
+    const [boolImage, setBoolImage] = useState(false);
+    const [sales,setSales] = useState(0);
+    const [boolSales, setBoolSales] = useState(false);
 
     async function handleSubmit() {
-        if (boolName && boolPrice && boolCount && boolImage) {
-            if (navigator.onLine) {
+        if (navigator.onLine) {
+            if (boolName && boolPrice && boolCount && boolImage) {
                 Promise.all([
-                    agent.GoodWanted.updateName(id, name),
-                    agent.GoodWanted.updatePrice(id, price),
-                    agent.GoodWanted.updateCount(id, count),
-                    agent.GoodWanted.updateSort(id, sort),
-                    agent.GoodWanted.updateRemark(id, remark),
-                    agent.GoodWanted.updateTransaction(id, transaction),
-                    agent.GoodWanted.updateImage(id, image)
+                    agent.GoodSale.addGoodSale(name, level, remark, price , sort, count,transaction, sales, image)
                 ]).then(results => {
+                    console.log(results);
                     const allSucceeded = results.every(result => result.result === 1);
                     if (allSucceeded) {
-                        alert("求购信息更新成功！");
-                        navigate('/PersonItem');
+                        alert("出售信息发布成功！");
+                        navigate('PersonItem');
                     } else {
-                        alert("求购信息更新失败！");
+                        alert("出售信息发布失败！");
                     }
                 }).catch(error => {
-                    alert("求购信息更新失败！");
-                });
-            } else {
-                alert("网络连接异常，请检查网络设置！");
+                    alert("出售信息发布失败！");
+                })
             }
+        } else {
+            alert("网络连接异常，请检查网络设置！");
         }
+
     }
 
     return (
@@ -57,7 +55,7 @@ const ChangeWanted = () => {
                     <Grid container wrap="nowrap" spacing={3} direction="column">
                         <Grid item>
                             <Typography variant="h6">
-                                发布求购信息
+                                发布出售信息
                             </Typography>
                         </Grid>
                         <Grid item>
@@ -98,6 +96,28 @@ const ChangeWanted = () => {
                                         setBoolPrice(false);
                                     } else {
                                         setBoolPrice(true);
+                                    }
+
+                                }}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                required
+                                fullWidth
+                                error={!boolLevel}
+                                helperText={boolLevel ? "" : '商品成色不能为0'}
+                                label="成色"
+                                placeholder="请输入商品成色"
+                                value={level}
+                                variant="filled"
+                                onChange={(event) => {
+                                    var v = event.target.value;
+                                    setLevel(v);
+                                    if (v == 0) {
+                                        setBoolLevel(false);
+                                    } else {
+                                        setBoolLevel(true);
                                     }
 
                                 }}
@@ -183,6 +203,28 @@ const ChangeWanted = () => {
                             <TextField
                                 required
                                 fullWidth
+                                error={!boolSales}
+                                helperText={boolSales ? "" : '商品库存不能为0'}
+                                label="库存"
+                                placeholder="请输入商品库存"
+                                value={sales}
+                                variant="filled"
+                                onChange={(event) => {
+                                    var v = event.target.value;
+                                    setSales(v);
+                                    if (v == 0) {
+                                        setBoolSales(false);
+                                    } else {
+                                        setBoolSales(true);
+                                    }
+
+                                }}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                required
+                                fullWidth
                                 error={!boolImage}
                                 helperText={boolImage ? "" : '商品图片不能为空'}
                                 label="图片"
@@ -203,11 +245,11 @@ const ChangeWanted = () => {
                     </Grid>
                 </CardContent>
                 <CardActions>
-                    <Button size="small" color="primary" variant="contained" onClick={handleSubmit}>保存修改</Button>
+                    <Button size="small" color="primary" variant="contained" onClick={handleSubmit}>提交</Button>
                 </CardActions>
             </Card>
         </Container>
     );
 };
 
-export default ChangeWanted;
+export default ReleaseSale;

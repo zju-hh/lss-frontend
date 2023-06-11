@@ -5,7 +5,7 @@ import { Card, CardActions, CardContent, TextField, Typography, Button, InputLab
 import { useLocation, useNavigate } from "react-router-dom";
 
 
-const ChangeWanted = () => {
+const ChangeSale = () => {
     const location = useLocation();
     const id = location.state.id;
     const navigate = useNavigate();
@@ -26,23 +26,23 @@ const ChangeWanted = () => {
         if (boolName && boolPrice && boolCount && boolImage) {
             if (navigator.onLine) {
                 Promise.all([
-                    agent.GoodWanted.updateName(id, name),
-                    agent.GoodWanted.updatePrice(id, price),
-                    agent.GoodWanted.updateCount(id, count),
-                    agent.GoodWanted.updateSort(id, sort),
-                    agent.GoodWanted.updateRemark(id, remark),
-                    agent.GoodWanted.updateTransaction(id, transaction),
-                    agent.GoodWanted.updateImage(id, image)
+                    agent.GoodSale.updateName(id, name),
+                    agent.GoodSale.updatePrice(id, price),
+                    agent.GoodSale.updateCount(id, count),
+                    agent.GoodSale.updateSort(id, sort),
+                    agent.GoodSale.updateRemark(id, remark),
+                    agent.GoodSale.updateTransaction(id, transaction),
+                    agent.GoodSale.updateImage(id, image)
                 ]).then(results => {
                     const allSucceeded = results.every(result => result.result === 1);
                     if (allSucceeded) {
-                        alert("求购信息更新成功！");
+                        alert("出售信息更新成功！");
                         navigate('/PersonItem');
                     } else {
-                        alert("求购信息更新失败！");
+                        alert("出售信息更新失败！");
                     }
                 }).catch(error => {
-                    alert("求购信息更新失败！");
+                    alert("出售信息更新失败！");
                 });
             } else {
                 alert("网络连接异常，请检查网络设置！");
@@ -57,7 +57,7 @@ const ChangeWanted = () => {
                     <Grid container wrap="nowrap" spacing={3} direction="column">
                         <Grid item>
                             <Typography variant="h6">
-                                发布求购信息
+                                修改出售信息
                             </Typography>
                         </Grid>
                         <Grid item>
@@ -210,4 +210,4 @@ const ChangeWanted = () => {
     );
 };
 
-export default ChangeWanted;
+export default ChangeSale;
