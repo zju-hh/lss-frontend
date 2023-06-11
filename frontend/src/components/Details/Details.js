@@ -1,5 +1,6 @@
 import { Typography, Avatar, Grid, makeStyles, Box, Card, CardContent, CardMedia, Button, TextField } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
+import {useSearchParams} from 'react-router-dom'
 import agent from "../../agent"
 import './Details.css';
 import { forEach } from "react-bootstrap/ElementChildren"
@@ -17,8 +18,10 @@ function Details () {
     const [goodInfo, setGoodInfo] = useState([])
     const [adding, setAdding] = useState(false);
     const [details, setDetails] = useState(false);
+    const [params] = useSearchParams();
+    const qid = params.get('id');
     const fetchData = async () => {
-        const info = await agent.Good.getGoodDetail(3);
+        const info = await agent.Good.getGoodDetail(qid);
         console.log(info.msg)
         setGoodInfo(info)
 
@@ -119,6 +122,7 @@ function Details () {
                                     e.target.src = "https://api.dujin.org/bing/1366.php";
                                 }}
                             />
+                            {/*<a href={goodInfo.image}>图片链接</a>*/}
                         </span>
                         <span className="goods-desc">
                             <div>
