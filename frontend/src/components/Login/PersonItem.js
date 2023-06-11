@@ -19,11 +19,12 @@ import {
     Tabs,
     Toolbar,
     Typography,
-    CardActions
+    CardActions,
+    Collapse
 
 } from '@material-ui/core';
 
-const ItemInfo = ({item,route}) => {
+const ItemInfo = ({ item, route, showButton }) => {
     const navigate = useNavigate();
     const handleChange = () => {
         navigate(route, {
@@ -46,7 +47,7 @@ const ItemInfo = ({item,route}) => {
                     component="img"
                     height="300"
                     image={item.image}
-                    style={{objectFit: "contain"}}
+                    style={{ objectFit: "contain" }}
                     onError={(e) => {
                         e.target.src = "https://api.dujin.org/bing/1366.php";
                     }}
@@ -61,9 +62,11 @@ const ItemInfo = ({item,route}) => {
 
                 </Box>
             </Box>
-            <CardActions>
-                 <Button size="small" color="primary" variant="contained" onClick={handleChange} >修改</Button>
-            </CardActions>
+            <Collapse in={showButton}>
+                <CardActions>
+                    <Button size="small" color="primary" variant="contained" onClick={handleChange} >修改</Button>
+                </CardActions>
+            </Collapse>
         </Card>
     )
 }
@@ -71,17 +74,17 @@ const ItemInfo = ({item,route}) => {
 const BuyingItems = ({ items }) => {
     return (
         <Box mt={3}>
-            <Typography variant="h4" style={{textAlign:'center', color:'Highlight'}}>求购</Typography>
+            <Typography variant="h4" style={{ textAlign: 'center', color: 'Highlight' }}>求购</Typography>
             <hr />
             {items.length > 0 ? (
                 <Grid container spacing={3}>
                     {items.map(item => (
                         <Grid item xs={11} key={item.id}>
-                            <ItemInfo item={item} route='/ChangeWanted' />
+                            <ItemInfo item={item} route='/ChangeWanted' showButton={true} />
                         </Grid>
                     ))}
                 </Grid>
-            ) : <Typography style={{textAlign:'center', fontSize:20, color:'Highlight'}}>空空如也</Typography>
+            ) : <Typography style={{ textAlign: 'center', fontSize: 20, color: 'Highlight' }}>空空如也</Typography>
             }
         </Box>
     );
@@ -90,18 +93,18 @@ const BuyingItems = ({ items }) => {
 const SellingItems = ({ items }) => {
     return (
         <Box mt={3}>
-            <Typography variant="h4" style={{textAlign:'center', color:'Highlight'}}>出售</Typography>
+            <Typography variant="h4" style={{ textAlign: 'center', color: 'Highlight' }}>出售</Typography>
 
             <hr />
             {items.length > 0 ? (
                 <Grid container spacing={3}>
                     {items.map(item => (
                         <Grid item xs={12} key={item.id}>
-                            <ItemInfo item={item} route='/ChangeSale '/>
+                            <ItemInfo item={item} route='/ChangeSale' showButton={true} />
                         </Grid>
                     ))}
                 </Grid>
-            ) :<Typography style={{textAlign:'center',fontSize:20, color:'Highlight'}}>空空如也</Typography>
+            ) : <Typography style={{ textAlign: 'center', fontSize: 20, color: 'Highlight' }}>空空如也</Typography>
             }
         </Box>
     );
@@ -110,17 +113,17 @@ const SellingItems = ({ items }) => {
 const CartItems = ({ items, dic }) => {
     return (
         <Box mt={3}>
-            <Typography variant="h4" style={{textAlign:'center', color:'Highlight'}}>购物车</Typography>
+            <Typography variant="h4" style={{ textAlign: 'center', color: 'Highlight' }}>购物车</Typography>
             <hr />
             {items.length > 0 ? (
                 <Grid container spacing={2}>
                     {items.map(item => (
                         <Grid item xs={12} key={item.id} >
-                            <Card style={{ padding: 14,  borderRadius: 11,border: 'none',background:'#f0f0f0' }}>
+                            <Card style={{ padding: 14, borderRadius: 11, border: 'none', background: '#f0f0f0' }}>
                                 {dic[item.qid] != null ?
-                                    <ItemInfo item={dic[item.qid]} />
+                                    <ItemInfo item={dic[item.qid]} showButton={false} />
                                     :
-                                    <Typography style={{textAlign:'center',alignContent:'center',fontSize:20, color:'Highlight',minHeight:100,verticalAlign:'middle'}}>商品不存在！</Typography>
+                                    <Typography style={{ textAlign: 'center', alignContent: 'center', fontSize: 20, color: 'Highlight', minHeight: 100, verticalAlign: 'middle' }}>商品不存在！</Typography>
                                 }
                                 <Box  >
                                     <Typography variant="subtitle1">数量：{item.quantity}</Typography>
@@ -130,7 +133,7 @@ const CartItems = ({ items, dic }) => {
                         </Grid>
                     ))}
                 </Grid>
-            ) : <Typography style={{textAlign:'center',fontSize:20, color:'Highlight'}}>空空如也</Typography>
+            ) : <Typography style={{ textAlign: 'center', fontSize: 20, color: 'Highlight' }}>空空如也</Typography>
             }
         </Box>
     );
@@ -213,7 +216,7 @@ const PersonItem = () => {
                                     onClick={() => handleChange(null, 0)}
                                 >
                                     <ListItemText primary="个人求购的商品" />
-                                    <Badge color="primary" badgeContent={buyingItems.length}  style={{ margin: 11}}/>
+                                    <Badge color="primary" badgeContent={buyingItems.length} style={{ margin: 11 }} />
                                 </ListItem>
                                 <ListItem
                                     button
@@ -222,16 +225,16 @@ const PersonItem = () => {
                                     onClick={() => handleChange(null, 1)}
                                 >
                                     <ListItemText primary="个人出售的商品" />
-                                    <Badge color="primary" badgeContent={sellingItems.length} style={{ margin: 11}} />
+                                    <Badge color="primary" badgeContent={sellingItems.length} style={{ margin: 11 }} />
                                 </ListItem>
                                 <ListItem
                                     button
-                                    style={{ padding: 14, margin: 11,  borderRadius: 11, width: 200 }}
+                                    style={{ padding: 14, margin: 11, borderRadius: 11, width: 200 }}
                                     selected={NavPos === 2}
                                     onClick={() => handleChange(null, 2)}
                                 >
                                     <ListItemText primary="购物车" style={{ textAlign: 'left' }} />
-                                    <Badge color="primary" badgeContent={cartItems.length} style={{ margin: 11}}/>
+                                    <Badge color="primary" badgeContent={cartItems.length} style={{ margin: 11 }} />
                                 </ListItem>
                             </List>
                         </Grid>
