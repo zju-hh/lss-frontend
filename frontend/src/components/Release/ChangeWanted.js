@@ -34,7 +34,7 @@ const ChangeWanted = () => {
                     agent.GoodWanted.updateTransaction(id, transaction),
                     agent.GoodWanted.updateImage(id, image)
                 ]).then(results => {
-                    const allSucceeded = results.every(result => result.result === 1);
+                    const allSucceeded = results.every(function (val) { return val; });
                     if (allSucceeded) {
                         alert("求购信息更新成功！");
                         navigate('/PersonItem');
