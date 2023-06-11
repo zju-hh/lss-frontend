@@ -21,20 +21,20 @@ const ReleaseSale = () => {
     const [transaction, setTransaction] = useState(1);
     const [image, setImage] = useState('');
     const [boolImage, setBoolImage] = useState(false);
-    const [sales,setSales] = useState(0);
+    const [sales, setSales] = useState(0);
     const [boolSales, setBoolSales] = useState(false);
 
     async function handleSubmit() {
         if (navigator.onLine) {
             if (boolName && boolPrice && boolCount && boolImage) {
                 Promise.all([
-                    agent.GoodSale.addGoodSale(name, level, remark, price , sort, count,transaction, sales, image)
+                    agent.GoodSale.addGoodSale(name, level, remark, price, sort, count, transaction, sales, image)
                 ]).then(results => {
                     console.log(results);
                     const allSucceeded = results.every(result => result.result === 1);
                     if (allSucceeded) {
                         alert("出售信息发布成功！");
-                        navigate('PersonItem');
+                        navigate('/PersonItem');
                     } else {
                         alert("出售信息发布失败！");
                     }

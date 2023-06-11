@@ -26,11 +26,10 @@ const ReleaseWanted = () => {
                 Promise.all([
                     agent.GoodWanted.addGoodWanted(name, price, sort, count, remark, transaction, image)
                 ]).then(results => {
-                    console.log(results);
-                    const allSucceeded = results.every(result => result.result === 1);
-                    if (allSucceeded) {
+                    console.log(`result = ${results}`);
+                    if (results) {
                         alert("求购信息发布成功！");
-                        navigate('PersonItem');
+                        navigate('/PersonItem');
                     } else {
                         alert("求购信息发布失败！");
                     }
