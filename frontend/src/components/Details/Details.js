@@ -106,6 +106,15 @@ function Details () {
         setDetails(true);
     }
 
+    async function copyText() {
+        var text = document.getElementById("text").innerText;
+        var input = document.getElementById("input");
+        input.value = text; // 修改文本框的内容
+        input.select(); // 选中文本
+        document.execCommand("copy"); // 执行浏览器复制命令
+        alert("复制成功");
+    }
+
     return (
         <Box className={classes.root} >
             <Grid container spacing={3} >
@@ -122,7 +131,8 @@ function Details () {
                                     e.target.src = "https://api.dujin.org/bing/1366.php";
                                 }}
                             />
-                            {/*<a href={goodInfo.image}>图片链接</a>*/}
+                            <a href={goodInfo.image}>图片链接  </a>
+                            <span>{goodInfo.image}</span>
                         </span>
                         <span className="goods-desc">
                             <div>
