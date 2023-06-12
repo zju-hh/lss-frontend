@@ -63,7 +63,7 @@ const ItemInfo = ({ item, route, showButton }) => {
             }}
         >
             <img
-                src={agent.Good.convertImageUrl(item.image)}
+                src={item.image}
                 alt="Product"
                 style={{
                     maxHeight: 200,
@@ -73,12 +73,12 @@ const ItemInfo = ({ item, route, showButton }) => {
                     cursor: "pointer",
                 }}
                 onClick={handleImageClick}
-                onError={handleImageError}
+                onError={(e)=>{e.target.src=agent.Good.convertImageUrl(item.image)}}
             />
 
             <Modal open={modalOpen} onClose={handleCloseModal}>
                 <img
-                    src={agent.Good.convertImageUrl(item.image)}
+                    src={item.image}
                     alt="Product"
                     style={{
                         maxHeight: "80vh",
@@ -86,6 +86,7 @@ const ItemInfo = ({ item, route, showButton }) => {
                         margin: "auto",
                         alignItems :"center",
                     }}
+                    onError={(e)=>{e.target.src=agent.Good.convertImageUrl(item.image)}}
                 />
             </Modal>
 
@@ -188,40 +189,46 @@ const PersonItem = () => {
     const [cartItems, setCartItems] = useState([]);
     const [goodsDict, setGoodsDict] = useState({});
     const [NavPos, setNavPos] = useState(0);
-    const [value, setValue] = useState(0);
+
+
     const handleChange = (event, newValue) => {
         setNavPos(newValue);
     };
 
     const SellPageUp = () => {
+
+        console.log(maxDisplayCnt , sellPageOff,sellingItems.length==maxDisplayCnt)
+
         if (sellingItems.length == maxDisplayCnt) {
-            setSellPageOff(sellPageOff + maxDisplayCnt);
+            setSellPageOff((sellPageOff + maxDisplayCnt));
         }
+        
 
     }
 
     const SellPageDown = () => {
 
-        setSellPageOff(Math.max(0, sellPageOff - maxDisplayCnt));
+        setSellPageOff((Math.max(0, sellPageOff - maxDisplayCnt)));
+
 
     }
 
     const fetchData = async () => {
-        const [buyingItems, sellingItems, cartItems] = await Promise.all([
+        const [buys, sells, carts] = await Promise.all([
             agent.Profile.getBuy(),
             agent.Profile.getPartSell(maxDisplayCnt, sellPageOff),
             agent.Profile.getCart()
         ]);
 
 
-        console.log(sellingItems, cartItems, buyingItems)
-        setBuyingItems(buyingItems);
-        setSellingItems(sellingItems);
-        setCartItems(cartItems);
+        console.log(sells, carts, buys)
+        setBuyingItems(buys);
+        setSellingItems(sells);
+        setCartItems(carts);
 
 
         const goodsDict = {};
-        for (const item of cartItems) {
+        for (const item of carts) {
             //注意这个有个qid
             const id = item.qid;
             if (id in goodsDict) continue
@@ -229,17 +236,14 @@ const PersonItem = () => {
             goodsDict[id] = goodDetail;
         }
         setGoodsDict(goodsDict);
-
-        console.log("buyingitems", buyingItems)
-        console.log("sellingitems", sellingItems)
-        console.log("cart", cartItems)
-        console.log("goods", goodsDict)
+        
+  
 
     };
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [sellPageOff]);
 
 
     return (
@@ -291,8 +295,8 @@ const PersonItem = () => {
                                 <CartItems items={cartItems} dic={goodsDict} />
                             </TabPanel>
                             < TabPanel value={NavPos} index={1}>
-                                <Button variant="contained" color="primary" onClick={SellPageDown} disabled={sellPageOff === 0}>后退</Button>
-                                <Button variant="contained" color="primary" onClick={SellPageUp} disabled={sellingItems.length != maxDisplayCnt} >前进</Button>
+                                <Button variant="contained" color="primary" onClick={SellPageDown} disabled={sellPageOff==0}>后退</Button>
+                                <Button variant="contained" color="primary" onClick={SellPageUp} disabled={sellingItems.length<maxDisplayCnt} >前进</Button>
                             </TabPanel>
                         </Grid>
                     </Grid>

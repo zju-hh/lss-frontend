@@ -196,10 +196,10 @@ function Details () {
                                 component="img"
                                 height="350"
                                 // image={imgURL}
-                                image={agent.Good.convertImageUrl(goodInfo.image)}
+                                image={goodInfo.image}
                                 style={{}}
                                 onError={(e) => {
-                                    e.target.src = "https://api.dujin.org/bing/1366.php";
+                                    e.target.src = agent.Good.convertImageUrl(goodInfo.image);
                                     // setImgURL("http://10.214.241.122:8080/image/get?fileName=" + goodInfo.image.split(".net/")[1])
                                 }}
                             />
