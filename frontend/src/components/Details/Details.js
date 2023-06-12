@@ -18,13 +18,13 @@ function Details () {
     const [goodInfo, setGoodInfo] = useState([])
     const [adding, setAdding] = useState(false);
     const [details, setDetails] = useState(false);
+    const [imgURL, setImgURL] = useState("");
     const [params] = useSearchParams();
     const qid = params.get('id');
     const fetchData = async () => {
         const info = await agent.Good.getGoodDetail(qid);
         console.log(info.msg)
         setGoodInfo(info)
-
         console.log(goodInfo)
     }
 
@@ -104,6 +104,7 @@ function Details () {
 
     async function showDetails() {
         setDetails(true);
+        setImgURL("http://10.214.241.122:8080/image/get?fileName=" + goodInfo.image.split(".net/")[1])
     }
 
     async function copyText() {
@@ -125,14 +126,13 @@ function Details () {
                             <CardMedia
                                 component="img"
                                 height="350"
-                                image={goodInfo.image}
+                                image={imgURL}
                                 style={{}}
                                 onError={(e) => {
                                     e.target.src = "https://api.dujin.org/bing/1366.php";
                                 }}
                             />
-                            <a href={goodInfo.image}>图片链接  </a>
-                            <span>{goodInfo.image}</span>
+
                         </span>
                         <span className="goods-desc">
                             <div>
