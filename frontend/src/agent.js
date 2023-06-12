@@ -95,8 +95,11 @@ const Good={
     getGoodDetail: id =>
         requests.get(`/good/detail/${id}`),
 
+    getGoodComment: (id) =>
+        requests.get(`/good/getComment?qid=${id}`),
+
 	addComment: (qid, content)=>
-		requests.post('/good/comment', {qid:qid, content: content})
+		requests.post(`/good/comment`, {qid:qid, content: content})
 }
 const Cart={
 	addToCart: (qid) =>
