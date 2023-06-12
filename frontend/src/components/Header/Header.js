@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { /* components */ } from 'semantic-ui-react';
 import "../../agent";
 import SearchBar from "../Search/SearchBar";
 const isDebug = process.env.REACT_APP_DEBUG_MODE === "true";
@@ -75,11 +76,11 @@ function Header() {
     }
 
     return (
-        <AppBar position="static" style={{backgroundColor: '#eee',borderBottom: '1px solid #ccc', boxShadow: 'none'}}>
-            <Toolbar style={{color: '#555' }}>
+        <AppBar style={{background: 'white',position:'relative', outline: "1px solid grey",boxShadow:'none', outline: "1px solid grey", borderBottom:'solid',  border: 'none', borderColor:'black',overflow:'true',maxWidth:'200%'}}>
+            <Toolbar style={{color: '#555'}}>
                 <Link to="/" className="nav-link">
-                    <img src="https://static.itch.io/images/itchio-textless-black.svg" alt="logo"
-                         style={{width: 'auto', height: '30px', marginRight: '10px'}}/>
+                    <img src="../../logo192.png" alt="logo"
+                         style={{width: 'auto', height: '30px',marginRight:'20px'}}/>
                 </Link>
 
                 <Typography variant="h6">Second-hand trading platform</Typography>
