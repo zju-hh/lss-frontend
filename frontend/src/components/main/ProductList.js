@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ProductItem from './ProductItem';
+import agent from '../../agent';
 const propTypes = {
   dataProducts: PropTypes.arrayOf(PropTypes.object)
 }

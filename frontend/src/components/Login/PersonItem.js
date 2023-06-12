@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import agent from '../../agent.js'
-import logo from '../../logo.svg'
-import Header from "../Header/Header";
 import {
     AppBar,
     Badge,
@@ -20,12 +18,19 @@ import {
     Toolbar,
     Typography,
     CardActions,
-    Collapse
+    Collapse,
+    Modal
 
 } from '@material-ui/core';
 
 const ItemInfo = ({ item, route, showButton }) => {
     const navigate = useNavigate();
+    const [modalOpen, setModalOpen] = useState(false);
+    const handleImageError = (e) => {
+        e.target.src =
+            "https://www.ecreativeim.com/blog/wp-content/uploads/2011/05/image-not-found.jpg";
+    };
+
     const handleChange = () => {
         navigate(route, {
             state: {
@@ -40,34 +45,69 @@ const ItemInfo = ({ item, route, showButton }) => {
             }
         });
     }
+    const handleImageClick = () => {
+        setModalOpen(true);
+      };
+    
+      const handleCloseModal = () => {
+        setModalOpen(false);
+      };
+
     return (
-        <Card>
-            <Box display="flex">
-                <CardMedia
-                    component="img"
-                    height="300"
-                    image={item.image}
-                    style={{ objectFit: "contain" }}
-                    onError={(e) => {
-                        e.target.src = "https://api.dujin.org/bing/1366.php";
+        <Box
+            style={{
+                padding: 14,
+                border: "1px solid grey",
+                borderRadius: 4,
+                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+            }}
+        >
+            <img
+                src={agent.Good.convertImageUrl(item.image)}
+                alt="Product"
+                style={{
+                    maxHeight: 200,
+                    objectFit: "cover",
+                    width: "100%",
+                    borderRadius: 4,
+                    cursor: "pointer",
+                }}
+                onClick={handleImageClick}
+                onError={handleImageError}
+            />
+
+            <Modal open={modalOpen} onClose={handleCloseModal}>
+                <img
+                    src={agent.Good.convertImageUrl(item.image)}
+                    alt="Product"
+                    style={{
+                        maxHeight: "80vh",
+                        maxWidth: "80vw",
+                        margin: "auto",
+                        alignItems :"center",
                     }}
                 />
-                <Box p={2} flexGrow={1}>
-                    <Typography variant="h5">名称：{item.name}</Typography>
-                    <Typography variant="subtitle1">价格：{item.price}</Typography>
-                    <Typography variant="subtitle1">详情：{item.remark}</Typography>
-                    <Typography variant="subtitle1">类别：{item.sort}</Typography>
-                    <Typography variant="subtitle1">数量：{item.count}</Typography>
-                    <Typography variant="subtitle1">交易方式：{item.transaction}</Typography>
+            </Modal>
 
-                </Box>
-            </Box>
+            <Typography variant="h6" style={{ marginTop: 10 }}>
+                {item.name}
+            </Typography>
+            <Typography variant="subtitle1" style={{ color: "#FF5722", fontWeight: "bold" }}>
+                Price: {item.price}
+            </Typography>
+            <Typography variant="body1" style={{ marginTop: 10 }}>
+                {item.remark}
+            </Typography>
+            <Typography variant="body2" style={{ marginTop: 10 }}>
+                Category: {item.sort}
+            </Typography>
             <Collapse in={showButton}>
                 <CardActions>
                     <Button size="small" color="primary" variant="contained" onClick={handleChange} >修改</Button>
                 </CardActions>
             </Collapse>
-        </Card>
+        </Box>
+
     )
 }
 

@@ -196,7 +196,7 @@ function Details () {
                             <CardMedia
                                 component="img"
                                 height="350"
-                                image={imgURL}
+                                image={agent.Good.convertImageUrl(imgURL)}
                                 style={{}}
                                 onError={(e) => {
                                     e.target.src = {imgURL};
