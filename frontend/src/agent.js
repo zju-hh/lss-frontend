@@ -96,11 +96,13 @@ const Good = {
     getGoodDetail: id =>
         requests.get(`/good/detail/${id}`),
 
-    addComment: (qid, content) =>
-        requests.post('/good/comment', { qid: qid, content: content }),
+    getGoodComment: (id) =>
+        requests.get(`/good/getComment?qid=${id}`),
+
+    addComment: (qid, content)=>
+        requests.post(`/good/comment`, {qid:qid, content: content}),
 
     convertImageUrl (imageUrl) {
-        
        if (imageUrl!=undefined && imageUrl.includes("/")){
     
          return "http://10.214.241.122:8080/image/get?fileName=" + imageUrl.split('/').pop()
@@ -114,7 +116,6 @@ const Good = {
 
     upImage:(imageUrl) =>
         requests.post(`/image/upload`,imageUrl.split('/').pop())
-    
     }
 const Cart = {
         addToCart: (qid) =>

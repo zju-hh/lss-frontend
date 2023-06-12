@@ -173,7 +173,6 @@ function Details () {
         fetchData();
     }
 
-
     async function showDetails() {
         setDetails(true);
         const pattern = /\.net\//;
@@ -196,10 +195,10 @@ function Details () {
                             <CardMedia
                                 component="img"
                                 height="350"
-                                image={agent.Good.convertImageUrl(imgURL)}
+                                image={imgURL}
                                 style={{}}
                                 onError={(e) => {
-                                    e.target.src = {imgURL};
+                                    e.target.src = "https://api.dujin.org/bing/1366.php";
                                     // setImgURL("http://10.214.241.122:8080/image/get?fileName=" + goodInfo.image.split(".net/")[1])
                                 }}
                             />
