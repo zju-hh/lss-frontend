@@ -195,7 +195,8 @@ function Details () {
                             <CardMedia
                                 component="img"
                                 height="350"
-                                image={imgURL}
+                                // image={imgURL}
+                                image={agent.Good.convertImageUrl(goodInfo.image)}
                                 style={{}}
                                 onError={(e) => {
                                     e.target.src = "https://api.dujin.org/bing/1366.php";
