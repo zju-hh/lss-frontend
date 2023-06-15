@@ -57,7 +57,7 @@ const ChangeWanted = () => {
                     <Grid container wrap="nowrap" spacing={3} direction="column">
                         <Grid item>
                             <Typography variant="h6">
-                                发布求购信息
+                                修改求购信息
                             </Typography>
                         </Grid>
                         <Grid item>
@@ -94,7 +94,7 @@ const ChangeWanted = () => {
                                 onChange={(event) => {
                                     var v = event.target.value;
                                     setPrice(v);
-                                    if (v == 0) {
+                                    if (v === 0) {
                                         setBoolPrice(false);
                                     } else {
                                         setBoolPrice(true);
@@ -116,7 +116,7 @@ const ChangeWanted = () => {
                                 onChange={(event) => {
                                     var v = event.target.value;
                                     setCount(v);
-                                    if (v == 0) {
+                                    if (v === 0) {
                                         setBoolCount(false);
                                     } else {
                                         setBoolCount(true);
@@ -192,7 +192,7 @@ const ChangeWanted = () => {
                                 onChange={(event) => {
                                     var v = event.target.value;
                                     setImage(v);
-                                    if (v == '') {
+                                    if (v === '') {
                                         setBoolImage(false);
                                     } else {
                                         setBoolImage(true);
