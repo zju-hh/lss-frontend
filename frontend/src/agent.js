@@ -77,7 +77,12 @@ const Profile = {
         requests.get(`/good/list?limit=${num}&offset=${off}`),
     getCart: () =>
         requests.get('/cart/detail'),
-
+    
+    deleteSell: (id) =>
+        requests.get(`/good/delete/${id}`),
+        
+    deleteCart: (uid,qid) =>
+        requests.get(`/cart/delete/${uid}/${qid}`), 
     updateName: (realName) =>
         requests.post('/user/updaterealname', { realName: realName }),
     updateClazz: (clazz) =>
@@ -117,6 +122,7 @@ const Good = {
     upImage:(imageUrl) =>
         requests.post(`/image/upload`,imageUrl.split('/').pop())
     }
+    
 const Cart = {
         addToCart: (qid) =>
             requests.post('/cart/add', { qid: qid })
