@@ -43,7 +43,7 @@ const LoginPage = () => {
 	return (
 		<div className="login-container">
 			<div className="login-box">
-				<img src="../../public/logo512.png" alt="Logo" className="login-logo" />
+				< img src="/logo512.png" alt="Logo" className="login-logo" style={{width:"30px"}}/>
 				<h1 className="login-title">用户登录</h1>
 				<div className="login-form">
 					<input

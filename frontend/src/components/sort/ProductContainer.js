@@ -35,13 +35,13 @@ class ProductContainer extends React.Component{
   }
 
   filterHighestPrice(arr){
-   return arr.length <= 1 ? arr : this.filterHighestPrice(arr.slice(1).filter(item => item.price.salePrice >= arr[0].price.salePrice)).concat(arr[0], this.filterHighestPrice(arr.slice(1).filter(item => item.price.salePrice < arr[0].price.salePrice)));
-  }
+     return arr.length <= 1 ? arr : this.filterHighestPrice(arr.slice(1).filter(item => item.price >= arr[0].price)).concat(arr[0], this.filterHighestPrice(arr.slice(1).filter(item => item.price < arr[0].price)));
+    }
 
-  filterLowestPrice(arr){
-    // 快速排序 Quick Sort
-    return arr.length <= 1 ? arr : this.filterLowestPrice(arr.slice(1).filter(item => item.price.salePrice <= arr[0].price.salePrice)).concat(arr[0], this.filterLowestPrice(arr.slice(1).filter(item => item.price.salePrice > arr[0].price.salePrice)));
-  }
+    filterLowestPrice(arr){
+      // 快速排序 Quick Sort
+      return arr.length <= 1 ? arr : this.filterLowestPrice(arr.slice(1).filter(item => item.price <= arr[0].price)).concat(arr[0], this.filterLowestPrice(arr.slice(1).filter(item => item.price > arr[0].price)));
+    }
 
   render() {
     const {
