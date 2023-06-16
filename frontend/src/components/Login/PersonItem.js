@@ -23,6 +23,7 @@ import {
     IconButton
 
 } from '@material-ui/core';
+import transitions from '@material-ui/core/styles/transitions.js';
 
 const ItemInfo = ({ item, route, showButton }) => {
     const navigate = useNavigate();
@@ -46,6 +47,53 @@ const ItemInfo = ({ item, route, showButton }) => {
             }
         });
     }
+
+    const sortConvert = (sort) => {
+        var sortNum = parseInt(sort);
+        switch (sortNum) {
+            case 0:
+                return "笔记本";
+            case 1:
+                return "二手家具";
+            case 2:
+                return "二手手机";
+            case 3:
+                return "家具日用";
+            case 4:
+                return "家用电器";
+            case 5:
+                return "乐器/运动";
+            case 6:
+                return "门票卡券";
+            case 7:
+                return "母婴用品";
+            case 8:
+                return "平板电脑";
+            case 9:
+                return "手机配件";
+            case 10:
+                return "数码产品";
+            case 11:
+                return "台式电脑";
+            case 12:
+                return "箱包服饰";
+            default:
+                return "照相机";
+        }
+    }
+
+    const transactionConvert = (transaction) => {
+        var transactionNum = parseInt(transaction);
+        switch (transactionNum) {
+            case 1:
+                return "邮寄";
+            case 2:
+                return "自提";
+            default:
+                return "当面交易";
+        }
+    }
+
     const handleImageClick = () => {
         setModalOpen(true);
     };
